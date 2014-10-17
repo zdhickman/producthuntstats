@@ -28,7 +28,7 @@
                         [:span.post-tagline.description] ; description
                         [:span.vote-count] ; votes
                         [:p.comment-count] ; comments
-                        ;[] ; TODO: founder boolean
+                        ;[:span.user-name] ; TODO: founder boolean
                         })))))
 
 (defn fetch-products []
