@@ -20,9 +20,15 @@
 (defn zipmap-fields [l]
   (zipmap fields l))
 
+(defn String->Number [str]
+  (try 
+    (let [n (read-string str)]
+      (if (number? n) n nil))
+    (catch Exception e nil)))
+
 (defn add-missing-makers [l]
   (if (empty? l) l
-    (if (number? (read-string (nth l 3)))
+    (if (number? (String->Number (nth l 3)))
       (cons (nth l 0)
         (cons (nth l 1)
           (cons false
