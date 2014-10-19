@@ -17,9 +17,6 @@
 
 (def fields [:votes :link :title :maker :description :comments])
 
-(defn zipmap-fields [l]
-  (zipmap fields l))
-
 (defn String->Number [str]
   (try 
     (let [n (read-string str)]
@@ -59,7 +56,7 @@
 
 
 (defn page-products [page]
-  (map zipmap-fields
+  (map #(zipmap fields %)
     (smart-partition num-fields
       (text* 
         (html/select page 
@@ -72,6 +69,9 @@
 
 (defn fetch-products []
   (map page-products (map fetch-url (all-pages))))
+
+(defn product-urls [products]
+  (map #(get % :link) products))
 
 (defn -main
   "Scrape Product Hunt archive data"
