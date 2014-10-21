@@ -73,7 +73,8 @@
   (map page-products (map fetch-url (all-pages))))
 
 (defn fetch-n-write []
-  (with-open [wrtr (writer "/Users/zack/producthuntstats/src/producthuntstats/data/scraped.txt")]
+  (with-open [wrtr (writer (str (System/getProperty "user.dir")
+                              "/data/scraped.txt"))]
     (.write wrtr (with-out-str (pr (fetch-products)))))
   (println "Wrote scraped data to file."))
 
