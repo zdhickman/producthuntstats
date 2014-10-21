@@ -2,6 +2,8 @@
   (:gen-class)
   (:require [net.cgrand.enlive-html :as html]))
 
+(use 'clojure.java.io)
+
 (def ^:dynamic base-url "http://www.producthunt.com/?page=")
 (def last-page 164) ; actually last page + 
 (def num-fields 6)
@@ -69,6 +71,11 @@
 
 (defn fetch-products []
   (map page-products (map fetch-url (all-pages))))
+
+(defn fetch-n-write []
+  (with-open [wrtr (writer "/Users/zack/producthuntstats/src/producthuntstats/data/scraped.txt")]
+    (.write wrtr (with-out-str (pr (fetch-products)))))
+  (println "Wrote scraped data to file."))
 
 (defn product-urls [products]
   (map #(get % :link) products))
