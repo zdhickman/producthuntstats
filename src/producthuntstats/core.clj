@@ -90,10 +90,20 @@
 (defn is-apple-url [anchor-tag]
   (.contains (str anchor-tag) "itunes"))
 
+(defn is-googleplay-url [anchor-tag]
+  (.contains (str anchor-tag) "play.google"))
+
+(defn check-for-* [fun url-suffix tags]
+  (ormap fun 
+    (html/select 
+      (fetch-url (str "http://producthunt.com" url-suffix))
+      tags)))
+
 (defn check-for-apple [url-suffix]
-  (ormap is-apple-url (html/select 
-    (fetch-url (str "http://producthunt.com" url-suffix))
-    #{[:a]})))
+  (check-for-* is-apple-url url-suffix #{[:a]}))
+
+(defn check-for-googleplay [url-suffix]
+  (check-for-* is-googleplay-url url-suffix #{[:a]}))
 
 (defn -main
   "Scrape Product Hunt archive data"
