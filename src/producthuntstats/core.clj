@@ -93,6 +93,9 @@
 (defn is-googleplay-url [anchor-tag]
   (.contains (str anchor-tag) "play.google"))
 
+(defn is-bootstrap [anchor-tag]
+  (.contains (str anchor-tag) "bootstrap"))
+
 (defn check-for-* [fun url-suffix tags]
   (ormap fun 
     (html/select 
@@ -104,6 +107,9 @@
 
 (defn check-for-googleplay [url-suffix]
   (check-for-* is-googleplay-url url-suffix #{[:a]}))
+
+(defn check-for-bootstrap [url-suffix]
+  (check-for-* is-bootstrap url-suffix #{[:link][:script]}))
 
 (defn -main
   "Scrape Product Hunt archive data"
