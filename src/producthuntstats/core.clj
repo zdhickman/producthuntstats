@@ -8,6 +8,12 @@
 (def last-page 164) ; actually last page + 
 (def num-fields 6)
 
+(defn ormap [pred sequ]
+  (if (empty? sequ)
+      false 
+      (or (pred (first sequ)) 
+          (ormap pred (rest sequ)))))
+
 (defn gen-page [number]
   (str base-url number))
 
@@ -80,6 +86,14 @@
 
 (defn product-urls [products]
   (map #(get % :link) products))
+
+(defn is-apple-url [anchor-tag]
+  (.contains (str anchor-tag) "itunes"))
+
+(defn check-for-apple [url-suffix]
+  (ormap is-apple-url (html/select 
+    (fetch-url (str "http://producthunt.com" url-suffix))
+    #{[:a]})))
 
 (defn -main
   "Scrape Product Hunt archive data"
